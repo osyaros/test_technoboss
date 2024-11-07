@@ -3,11 +3,25 @@
     <CButton class="btn btn-primary" type="button" @click="openAddEditModal">
       Добавить элемент
     </CButton>
+    
+    <!-- Table -->
     <CTable class="table table-hover">
       <CTableHead>
         <CTableRow>
-          <CTableHeaderCell @click="sort('code')">Код</CTableHeaderCell>
-          <CTableHeaderCell @click="sort('value')">Значение</CTableHeaderCell>
+          <CTableHeaderCell @click="sort('code')">
+            Код
+            <span v-if="sortKey === 'code'">
+              <span v-if="sortDirection === 'asc'">↑</span>
+              <span v-if="sortDirection === 'desc'">↓</span>
+            </span>
+          </CTableHeaderCell>
+          <CTableHeaderCell @click="sort('value')">
+            Значение
+            <span v-if="sortKey === 'value'">
+              <span v-if="sortDirection === 'asc'">↑</span>
+              <span v-if="sortDirection === 'desc'">↓</span>
+            </span>
+          </CTableHeaderCell>
           <CTableHeaderCell>Удалить</CTableHeaderCell>
         </CTableRow>
       </CTableHead>
@@ -15,7 +29,11 @@
         <CTableRow
           v-for="item in filteredData"
           :key="item.id"
-          :color="item.value.includes('red') || item.code.includes('red') ? 'danger' : undefined"
+          :color="
+            item.value.includes('red') || item.code.includes('red')
+              ? 'danger'
+              : undefined
+          "
           @click="openAddEditModal(item)"
         >
           <CTableDataCell>{{ item.code }}</CTableDataCell>
@@ -27,7 +45,12 @@
       </CTableBody>
     </CTable>
 
-    <CModal :visible="isModalOpen" @close="closeModal" title="Редактировать элемент">
+    <!-- modal redactor -->
+    <CModal
+      :visible="isModalOpen"
+      @close="closeModal"
+      title="Редактировать элемент"
+    >
       <CModalBody>
         <CForm>
           <CFormLabel>Код</CFormLabel>
@@ -42,7 +65,12 @@
       </CModalFooter>
     </CModal>
 
-    <CModal :visible="isConfirmDeleteOpen" @close="closeConfirmDelete" title="Подтвердить удаление">
+    <!-- modal delete -->
+    <CModal
+      :visible="isConfirmDeleteOpen"
+      @close="closeConfirmDelete"
+      title="Подтвердить удаление"
+    >
       <CModalBody>Вы уверены, что хотите удалить этот элемент?</CModalBody>
       <CModalFooter>
         <CButton @click="deleteItem" color="secondary">Да</CButton>
@@ -87,8 +115,10 @@ const sortDirection = ref("asc");
 
 const filteredData = computed(() => {
   return data.value
-    .filter(item =>
-      item.code.includes(searchQuery.value) || item.value.includes(searchQuery.value)
+    .filter(
+      (item) =>
+        item.code.includes(searchQuery.value) ||
+        item.value.includes(searchQuery.value)
     )
     .sort((a, b) => {
       if (!sortKey.value) return 0;
@@ -109,7 +139,9 @@ const closeModal = () => {
 
 const saveChanges = () => {
   if (currentItem.value.id) {
-    const index = data.value.findIndex(item => item.id === currentItem.value.id);
+    const index = data.value.findIndex(
+      (item) => item.id === currentItem.value.id
+    );
     data.value[index] = currentItem.value;
   } else {
     currentItem.value.id = Date.now();
@@ -128,12 +160,13 @@ const closeConfirmDelete = () => {
 };
 
 const deleteItem = () => {
-  data.value = data.value.filter(item => item.id !== itemIdToDelete.value);
+  data.value = data.value.filter((item) => item.id !== itemIdToDelete.value);
   closeConfirmDelete();
 };
 
 const sort = (key) => {
-  sortDirection.value = sortKey.value === key && sortDirection.value === "asc" ? "desc" : "asc";
+  sortDirection.value =
+    sortKey.value === key && sortDirection.value === "asc" ? "desc" : "asc";
   sortKey.value = key;
 };
 </script>

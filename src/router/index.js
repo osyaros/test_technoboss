@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Part1 from '../pages/Part1.vue'
-import Part3 from '@/pages/Part3.vue'
+import Part1 from '../pages/Page1/Part1.vue'
+import Part3 from '@/pages/Page3/Part3.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,7 +19,7 @@ const router = createRouter({
     {
       path: '/part2',
       name: 'part2',
-      component: () => import('../pages/Part2.vue')
+      component: () => import('../pages/Page2/Part2.vue')
     },
     {
       path: '/part3',

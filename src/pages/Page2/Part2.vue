@@ -3,6 +3,8 @@
     <CButton class="btn btn-primary" type="button" @click="openAddEditModal">
       Добавить элемент
     </CButton>
+
+    <!-- table -->
     <div class="d-flex justify-content-between align-items-center">
       <div @click="sort('code')" class="sortable-column">
         Код
@@ -35,7 +37,8 @@
         <CButton @click.stop="confirmDelete(item.id)" color="danger">Удалить</CButton>
       </div>
     </div>
-
+    
+    <!-- modal redactor -->
     <CModal :visible="isModalOpen" @close="closeModal" title="Редактировать элемент">
       <CModalBody>
         <CForm>
@@ -51,6 +54,7 @@
       </CModalFooter>
     </CModal>
 
+    <!-- modal delete -->
     <CModal :visible="isConfirmDeleteOpen" @close="closeConfirmDelete" title="Подтвердить удаление">
       <CModalBody>Вы уверены, что хотите удалить этот элемент?</CModalBody>
       <CModalFooter>
